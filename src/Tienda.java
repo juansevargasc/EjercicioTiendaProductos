@@ -96,7 +96,6 @@ public class Tienda
      * @param a
      * @return cantidadTipoProducto
      */
-    
     public int cantProductoTipo(Producto a)
     {
         int cantidadProductoTipo = 0;
@@ -111,7 +110,12 @@ public class Tienda
         return cantidadProductoTipo;
     }
     
-    
+    /**
+     * 
+     * @param nombreProducto
+     * @param unidades
+     * @return 
+     */
     public boolean venderProducto(String nombreProducto, int unidades)
     {
   
@@ -143,6 +147,34 @@ public class Tienda
         
     }
     
+    /**
+     * 
+     * @param nombre
+     * @return 
+     */
+    public Producto getProductoPorNombre(String nombre)
+    {
+        Producto producto = new Producto();
+        for(int i = 0; i < this.cantTotalProductos; i++)
+        {
+            if( this.productos[i].getNombre().equals(nombre) )
+            {
+                producto = this.productos[i];
+            }else
+            {
+                producto = null;
+            }
+        }
+        return producto;
+        
+    }
+    
+    /**
+     * 
+     * @param a
+     * @param unidades
+     * @return 
+     */
     public boolean pedirProducto(Producto a, int unidades)
     {
         
@@ -168,6 +200,27 @@ public class Tienda
         {
             return false;
         }
+    }
+    
+    public void generarEstadísticas()
+    {
+        double ventaMayor = 0;
+        double ventaMenor = this.productos[0].getVentas();
+        String nomProductoMayor = null, nomProductoMenor = null;
+        for(int i = 0; i < this.cantTotalProductos; i++)
+        {
+            if( this.productos[i].getVentas() > ventaMayor )
+            {
+                ventaMayor = this.productos[i].getVentas();
+                nomProductoMayor = this.productos[i].getNombre();
+            }else if(this.productos[i].getVentas() < ventaMenor)
+            {
+                ventaMenor = this.productos[i].getVentas();
+                nomProductoMenor = this.productos[i].getNombre();
+            } 
+        }
+        System.out.println("Venta Mayor: " + "\n" + "Producto: " + nomProductoMayor + " Precio: " + ventaMayor);
+        System.out.println("Venta Menor: " + ventaMenor + "\n" + "Producto: " + nomProductoMenor + " Precio: " + ventaMenor);
     }
     
 }
