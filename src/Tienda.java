@@ -14,19 +14,35 @@ public class Tienda
     private Producto[] productos;
     private int cantTotalProductos;
     private double ventasTotales;
+    private int numProductosVendidos;
 
     public Tienda() 
     {
         
     }
 
-    public Tienda(String nombre, Producto[] productos, int cantTotalProductos, double ventasTotales) 
+    public Tienda(String nombre, int cantTotalProductos) 
+    {
+        this.nombre = nombre;
+        this.cantTotalProductos = cantTotalProductos;
+        this.productos = null;
+        this.ventasTotales = 0;
+        this.numProductosVendidos = 0;
+        
+    }
+    
+    
+
+    public Tienda(String nombre, Producto[] productos, int cantTotalProductos, double ventasTotales, int numProductosVendidos)
     {
         this.nombre = nombre;
         this.productos = productos;
         this.cantTotalProductos = cantTotalProductos;
         this.ventasTotales = ventasTotales;
+        this.numProductosVendidos = numProductosVendidos;
     }
+
+    
 
     public String getNombre()
     {
@@ -48,6 +64,12 @@ public class Tienda
         return ventasTotales;
     }
 
+    public int getNumProductosVendidos() 
+    {
+        return numProductosVendidos;
+    }
+
+    //Setters
     public void setNombre(String nombre) 
     {
         this.nombre = nombre;
@@ -67,25 +89,31 @@ public class Tienda
     {
         this.ventasTotales = ventasTotales;
     }
+
+    public void setNumProductosVendidos(int numProductosVendidos) 
+    {
+        this.numProductosVendidos = numProductosVendidos;
+    }
+    
+    
     
     /**
-     * Vende una cierta cantidad de unidades de un producto
+     * Calcula el precio del producto según su tipo y de acuerdo al impuesto agregado
      * @param a
-     * @param unidades
-     * @return pedido
+     * @return precioTotal
      */
     public double precioDeProducto(Producto a)
     {
         double impPapeleria = 0.16, impSupermercado = 0.4, impDrogueria = 0.12, precioTotal = 1;
         if(a.getTipo().equals("Papeleria"))
         {
-            precioTotal = ( a.getPrecioBase() * impPapeleria);
+            precioTotal = (a.getPrecioBase()) + ( a.getPrecioBase() * impPapeleria);
         }else if(a.getTipo().equals("Supermrcado"))
          {
-             precioTotal = ( a.getPrecioBase() * impSupermercado);
+             precioTotal = (a.getPrecioBase()) + ( a.getPrecioBase() * impSupermercado);
          }else if(a.getTipo().equals("Drogueria"))
          {
-            precioTotal = ( a.getPrecioBase() * impDrogueria );
+            precioTotal = (a.getPrecioBase()) + ( a.getPrecioBase() * impDrogueria );
          }
         return precioTotal;
     }
@@ -114,7 +142,7 @@ public class Tienda
      * 
      * @param nombreProducto
      * @param unidades
-     * @return 
+     * @return boolean
      */
     public boolean venderProducto(String nombreProducto, int unidades)
     {
@@ -134,6 +162,10 @@ public class Tienda
                 {
                     // Actualiza el valor de unidades disponibles
                     this.productos[i].setCantidadActual( this.productos[i].getCantidadActual() - unidades );
+                    // Actualiza las ventas
+                    this.ventasTotales = precioDeProducto( this.productos[i] ) * (unidades);
+                    // Actualiza el numero de productos vendidos
+                    this.numProductosVendidos += unidades;
                     break;
                 }
              
@@ -148,9 +180,9 @@ public class Tienda
     }
     
     /**
-     * 
+     * Retorna un objeto de tipo producto si coincide con un nombre dado
      * @param nombre
-     * @return 
+     * @return producto
      */
     public Producto getProductoPorNombre(String nombre)
     {
@@ -173,7 +205,7 @@ public class Tienda
      * 
      * @param a
      * @param unidades
-     * @return 
+     * @return boolean
      */
     public boolean pedirProducto(Producto a, int unidades)
     {
@@ -184,9 +216,8 @@ public class Tienda
             {
                if( a.getNombre().equals( this.productos[i].getNombre() ) )
                {
-                   //this.productos[this.cantTotalProductos] = a;
+                   // Actualiza la cantidad actual de ese producto del arreglo de la tienda
                    this.productos[i].setCantidadActual( this.productos[i].getCantidadActual() + unidades );
-                   this.cantTotalProductos += unidades;
                    break;
                }else
                {
@@ -202,6 +233,10 @@ public class Tienda
         }
     }
     
+    /**
+     * Imprime LAS ESTADÍSTICAS de la tienda en cuanto
+     * a venta mayor y menor
+     */
     public void generarEstadísticas()
     {
         double ventaMayor = 0;
@@ -221,6 +256,18 @@ public class Tienda
         }
         System.out.println("Venta Mayor: " + "\n" + "Producto: " + nomProductoMayor + " Precio: " + ventaMayor);
         System.out.println("Venta Menor: " + ventaMenor + "\n" + "Producto: " + nomProductoMenor + " Precio: " + ventaMenor);
+    }
+    
+    /**
+     * Hace el promedio de ventas usando los parámetros de unidades vendidas totales y ventas totales 
+     * @return promedio 
+     */
+    public double promedioDeVentas()
+    {
+        double promedio;
+        //pormedio = Ventas totales / numero de productos vendidos
+        promedio = (this.ventasTotales) / (this.numProductosVendidos); 
+        return promedio;
     }
     
 }

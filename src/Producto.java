@@ -12,10 +12,12 @@ public class Producto
 {
     private String nombre;
     private String tipo;
-    private int undMinimas;
+    private int undMinimas; //Und. mínimas de producto que deben haber para hacer un nuevo pedido
     private double precioBase;
-    private int cantidadActual;
+    private int cantidadActual; //Cantidad actual de producto en tienda
+    private double ventas; //Ventas totales de producto
 
+    
     public Producto() 
     {
         
@@ -28,10 +30,28 @@ public class Producto
         this.undMinimas = undMinimas;
         this.precioBase = precioBase;
         this.cantidadActual = cantidadActual;
+        this.ventas = 0;
     }
 
     
+    
+    
 
+    public Producto(String nombre, String tipo, int undMinimas, double precioBase, int cantidadActual, double ventas)
+    {
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.undMinimas = undMinimas;
+        this.precioBase = precioBase;
+        this.cantidadActual = cantidadActual;
+        this.ventas = ventas;
+    }
+
+    public double getVentas()
+    {
+        return ventas;
+    }
+    
     public String getNombre() 
     {
         return nombre;
@@ -56,9 +76,12 @@ public class Producto
     {
         return cantidadActual;
     }
-    
-    
 
+    public void setVentas(double ventas) 
+    {
+        this.ventas = ventas;
+    }
+    
     public void setNombre(String nombre)
     {
         this.nombre = nombre;
