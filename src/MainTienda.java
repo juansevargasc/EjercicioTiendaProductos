@@ -39,7 +39,7 @@ public class MainTienda
 
             //Creación de producto
             Producto [] productos = new Producto[ tienda1.getCantTotalProductos() ];
-            System.out.println("Cree los productos ");
+            System.out.println("\n Cree los productos ");
             System.out.println("El número de productos debe ser: " + tienda1.getCantTotalProductos());
             //Creación del objeto que servirá como varible para llenar arreglo
             Producto producto1 = new Producto();
@@ -61,7 +61,7 @@ public class MainTienda
                 double precioBase = input.nextDouble();
                 producto1.setPrecioBase(precioBase);
 
-                System.out.println("Unidades que va a asignar (Recuerde que las unidades no pueden ser menores al mínimo deisgnado");
+                System.out.println("Unidades que va a asignar (Recuerde que las unidades no pueden ser menores al mínimo deisgnado)");
                 int cantidadActual = input.nextInt();
                 //Garantía de que unidades de producto sean como mínimo el número mínimo designado
                 if(cantidadActual < unidadesMin)
@@ -74,7 +74,7 @@ public class MainTienda
                     }while( cantidadActual < unidadesMin );
                 }
                 producto1.setCantidadActual(cantidadActual);
-
+                //Asignación del producto al arreglo
                 productos[i] = producto1; 
 
             }
@@ -84,22 +84,33 @@ public class MainTienda
 
 
             //Vender producto
+            System.out.println("\n Venta de producto \n Ingrese nombre de producto: ");
             String nombreProducto = input.next();
+            System.out.println("Unidades: ");
             int unidades = input.nextInt();
             boolean resultado = tienda1.venderProducto(nombreProducto, unidades);
             System.out.println("Producto vendido: " + resultado);
 
             //Hacer pedido
+            System.out.println("\n \n Si un producto se agota se debe hacer un pedido \n Ingrese nombre de producto agotado: ");
             nombreProducto = input.next();
             Producto producto = tienda1.getProductoPorNombre(nombreProducto);
+            System.out.println("Unidades: ");
             unidades = input.nextInt();
             resultado = tienda1.pedirProducto(producto, unidades);
-
             System.out.println("Resultado: " + resultado);
-            System.out.println("Producto: " + producto.getNombre());
-            System.out.println("Unidades mínimas designadas: " + producto.getUndMinimas());
-            System.out.println("Unidades actuales: " + producto.getCantidadActual());
+            if(resultado == true)
+            {
+                System.out.println("Producto: " + producto.getNombre());
+                System.out.println("Unidades mínimas designadas: " + producto.getUndMinimas());
+                System.out.println("Unidades actuales: " + producto.getCantidadActual());
+            }else
+            {
+                System.out.println("No fue posible hacer la venta");
+            }
             
+            
+            //Otras opciones
             System.out.println(" \n \n");
             System.out.println("2. Mostrar estadísticas de ventas \n 3. Mostrar ingresos totales por ventas \n 4. Mostrar promedio de ventas");
             opcion = input.nextInt();
@@ -110,6 +121,8 @@ public class MainTienda
                 case 3: System.out.println("Ingresos totales: " + tienda1.getVentasTotales() );
                         break;
                 case 4: System.out.println("Promedio de ventas: " + tienda1.promedioDeVentas());
+                        break;
+                default: System.out.println("Opción no válida");
             }
             
         }
