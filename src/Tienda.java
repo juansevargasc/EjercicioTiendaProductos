@@ -157,13 +157,14 @@ public class Tienda
                 //Minimo: Hace la diferencia entre
                 //la cantidad de productos de la tienda (de ese producto en específico)
                 //con las unidades mínimas que se deben mantener de ese producto
-                int minimo = ( cantProductoTipo(this.productos[i]) - this.productos[i].getUndMinimas() );
+                int minimo = ( this.productos[i].getCantidadActual() ) - ( this.productos[i].getUndMinimas() );
                 if(minimo >= 0)
                 {
                     // Actualiza el valor de unidades disponibles
                     this.productos[i].setCantidadActual( this.productos[i].getCantidadActual() - unidades );
                     // Actualiza las ventas
-                    this.ventasTotales = precioDeProducto( this.productos[i] ) * (unidades);
+                    //Usa el método de precio de producto para saber su costo con impuestos
+                    this.ventasTotales = ( precioDeProducto( this.productos[i] ) ) * (unidades);
                     // Actualiza el numero de productos vendidos
                     this.numProductosVendidos += unidades;
                     break;
@@ -209,28 +210,35 @@ public class Tienda
      */
     public boolean pedirProducto(Producto a, int unidades)
     {
-        
-        if( a.getCantidadActual() <= a.getUndMinimas() )
+        if( a != null )
         {
-            for(int i = 0; i < unidades; i++)
+            if( a.getCantidadActual() <= a.getUndMinimas() )
             {
-               if( a.getNombre().equals( this.productos[i].getNombre() ) )
-               {
-                   // Actualiza la cantidad actual de ese producto del arreglo de la tienda
-                   this.productos[i].setCantidadActual( this.productos[i].getCantidadActual() + unidades );
-                   break;
-               }else
-               {
-                   return false;
-               }
+                for(int i = 0; i < unidades; i++)
+                {
+                    if( a.getNombre().equals( this.productos[i].getNombre() ) )
+                    {
+                        // Actualiza la cantidad actual de ese producto del arreglo de la tienda
+                        this.productos[i].setCantidadActual( this.productos[i].getCantidadActual() + unidades );
+                        break;
+                    }else
+                    {
+                        return false;
+                    }
                
                 
+                }
+                return true;
+            }else
+            {
+                return false;
             }
-            return true;
         }else
         {
             return false;
         }
+        
+        
     }
     
     /**
